@@ -4,17 +4,11 @@ import 'package:moviesharmal/config.dart';
 import 'package:moviesharmal/utils/types.dart';
 
 Future<List<Movie>> fetchMovies({String? category, int page = 1}) async {
-  String genreQuery = '';
-  if (category != null && category.isNotEmpty) {
-    List<String> categories = category.split(',');
-    List<String?> genreIds = categories
-        .map((cat) => categoryMap[cat]?.toString())
-        .where((id) => id != null)
-        .toList();
-    genreQuery = genreIds.isNotEmpty ? '&with_genres=${genreIds.join('|')}' : '';
-  }
+  String url = 'https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&page=$page';
 
-  final String url = 'https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&page=$page$genreQuery';
+  if (category != null && category.isNotEmpty) {
+    url += '&with_genres=${category.split(",").join("|")}';
+  }
 
   final response = await http.get(Uri.parse(url));
 

@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
 
-  
     TextTheme textTheme = createTextTheme(context, "Rubik", "Rubik");
 
     MaterialTheme theme = MaterialTheme(textTheme);
