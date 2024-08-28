@@ -12,6 +12,7 @@ jobs:
   build:      
     name: Build & Release 
     runs-on: macos-latest 
+    permissions: write-all
 
     steps:
         #1 Checkout Repository
@@ -103,6 +104,7 @@ jobs:
         #13 Create Release
       - name: Create Release
         uses: ncipollo/release-action@v1
+
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
           tag: v${{ env.VERSION }}
