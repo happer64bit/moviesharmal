@@ -68,7 +68,7 @@ jobs:
             - name: Build appBundle
         run: flutter build appbundle
 
-            - name: Extract version from pubspec.yaml
+      - name: Extract version from pubspec.yaml
         id: extract_version
         run: |
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
