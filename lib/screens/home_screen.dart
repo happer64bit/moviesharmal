@@ -25,13 +25,26 @@ class _HomeScreenState extends State<HomeScreen> {
     _restoreState();  // Restore state when the app is launched
   }
 
-  final Map<String, List<int>> _genreMap = {
-    "Happy": [35, 10402, 12, 28],
-    "Sad": [18, 27, 10402],
-    "Lonely": [9648, 99, 10752],
-    "Heart Broken": [10749, 18, 27],
-    "Romance": [10749, 18],
-    "Adulty": [18, 10749],
+  final Map<String, int> _categoryMap = {
+    "Action": 28,
+    "Adventure": 12,
+    "Animation": 16,
+    "Comedy": 35,
+    "Crime": 80,
+    "Documentary": 99,
+    "Drama": 18,
+    "Family": 10751,
+    "Fantasy": 14,
+    "History": 36,
+    "Horror": 27,
+    "Music": 10402,
+    "Mystery": 9648,
+    "Romance": 10749,
+    "Science Fiction": 878,
+    "TV Movie": 10770,
+    "Thriller": 53,
+    "War": 10752,
+    "Western": 37,
   };
 
   Future<void> _restoreState() async {
@@ -47,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await _fetchMovies(category: category, page: currentPage);
   }
-
 
   Future<void> _saveState() async {
     final prefs = await SharedPreferences.getInstance();
@@ -90,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String? _buildCategoryQuery([Set<String>? filters]) {
     final selectedIds = (filters ?? _selectedFilters)
-        .expand((filter) => _genreMap[filter]!)
+        .map((filter) => _categoryMap[filter]!)
         .toSet()
         .toList();
     return selectedIds.isEmpty ? null : selectedIds.join(',');
@@ -164,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: WrapCrossAlignment.start,
                               alignment: WrapAlignment.start,
                               children: [
-                                for (var filter in _genreMap.keys)
+                                for (var filter in _categoryMap.keys)
                                   FilterChip(
                                     selected: _selectedFilters.contains(filter),
                                     onSelected: (value) {
