@@ -59,7 +59,15 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getFavoriteMovies() async {
     final db = await database;
-    return await db.query(table);
+    return await db.query(table, orderBy: "createdAt Desc");
   }
 
+  Stream<List<Map<String, dynamic>>> getFavoriteMoviesStream() async* {
+    final db = await database;
+    while (true) {
+      final List<Map<String, dynamic>> movies = await db.query('movies', orderBy: 'createdAt DESC');
+      yield movies;
+      await Future.delayed(const Duration(seconds: 1)); // Polling interval for checking changes
+    }
+  }
 }

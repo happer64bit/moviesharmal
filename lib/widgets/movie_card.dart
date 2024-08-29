@@ -33,30 +33,29 @@ class _MovieCardSwiperState extends State<MovieCardSwiper> {
 
   Future<void> _loadFavoriteMovies() async {
     final favoriteMovies = await _dbHelper.getFavoriteMovies();
+
     setState(() {
       _favoriteMovieIds = favoriteMovies.map((movie) => movie[DatabaseHelper.columnMovieId] as int).toSet();
     });
   }
 
-  void _toggleFavorite(int movieId) async {
+  Future<void> _toggleFavorite(int movieId) async {
+    final movie = widget.movies.firstWhere((m) => m.id == movieId);
+
     if (_favoriteMovieIds.contains(movieId)) {
       await _dbHelper.removeFavoriteMovie(movieId);
     } else {
       await _dbHelper.addFavoriteMovie({
         DatabaseHelper.columnMovieId: movieId,
-        DatabaseHelper.columnType: 'favorite',
-        DatabaseHelper.columnTitle: '',
-        DatabaseHelper.columnBackdropPath: '',
-        DatabaseHelper.columnCreatedAt: '',
+        DatabaseHelper.columnType: 'movie',
+        DatabaseHelper.columnTitle: movie.title,
+        DatabaseHelper.columnBackdropPath: movie.backdropPath,
+        DatabaseHelper.columnCreatedAt: DateTime.now().toIso8601String(),
       });
     }
-    setState(() {
-      if (_favoriteMovieIds.contains(movieId)) {
-        _favoriteMovieIds.remove(movieId);
-      } else {
-        _favoriteMovieIds.add(movieId);
-      }
-    });
+    
+    // Reload the favorite movies list to update the state
+    await _loadFavoriteMovies();
   }
 
   @override

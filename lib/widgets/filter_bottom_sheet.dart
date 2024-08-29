@@ -41,52 +41,54 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          const Text(
-            "Filter Results",
-            style: TextStyle(fontSize: 24),
-          ),
-          const SizedBox(height: 20),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (var filter in categoryMap.keys)
-                FilterChip(
-                  selected: _localSelectedFilters.contains(filter),
-                  onSelected: (value) {
-                    _onFilterSelected(filter, value);
-                  },
-                  label: Text(filter),
-                ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: FilledButton(
-              onPressed: () {
-                Navigator.pop(context);
-                widget.selectedFilters.clear();
-                widget.selectedFilters.addAll(_localSelectedFilters);
-                widget.applyFilters();
-              },
-              child: const Text('Apply Filters'),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Text(
+              "Filter Results",
+              style: TextStyle(fontSize: 24),
             ),
-          ),
-          const SizedBox(height: 6),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: TextButton(
-              onPressed: () {
-                widget.clearState();
-                Navigator.pop(context);
-              },
-              child: const Text('Clear States'),
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                for (var filter in categoryMap.keys)
+                  FilterChip(
+                    selected: _localSelectedFilters.contains(filter),
+                    onSelected: (value) {
+                      _onFilterSelected(filter, value);
+                    },
+                    label: Text(filter),
+                  ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  widget.selectedFilters.clear();
+                  widget.selectedFilters.addAll(_localSelectedFilters);
+                  widget.applyFilters();
+                },
+                child: const Text('Apply Filters'),
+              ),
+            ),
+            const SizedBox(height: 6),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: TextButton(
+                onPressed: () {
+                  widget.clearState();
+                  Navigator.pop(context);
+                },
+                child: const Text('Clear States'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
