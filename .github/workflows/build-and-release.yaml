@@ -49,15 +49,12 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
         
-       #6 Building APK
       - name: Build APK
         run: flutter build apk --release
 
-        #7 Building App Bundle (aab)
       - name: Build appBundle
         run: flutter build appbundle
 
-        #8 Build IPA ( IOS Build )
       - name: Build IPA
         run: flutter build ipa --no-codesign
 

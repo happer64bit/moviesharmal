@@ -1,16 +1,15 @@
-# moviesharmal
+# Movie Shar Mal
 
-A new Flutter project.
+Movie Shar Mal is a app that allows you to search movie by your interest 🎨.
+This app is based on TMDB Api.
 
-## Getting Started
+## Donation Address
 
-This project is a starting point for a Flutter application.
+You can support me via WavePay and KBZPay to support my education :)
 
-A few resources to get you started if this is your first Flutter project:
+Contact my email for my KBZPay and WavePay number.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- EMAIL: `wintkhantlin@gmail.com`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* `ERC20` - `0x502E082E1124806e12811dE3241609798f053413`
+* `SOLANA` - `EK48PtUR2vXA7wTzUiNuUpmS6peXWWmmrqncNxFn3sL7`
