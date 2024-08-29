@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moviesharmal/screens/favourite_screen.dart';
 import 'package:moviesharmal/screens/home_screen.dart';
+import 'package:moviesharmal/utils/db.dart';
 import 'util.dart';
 import 'theme.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await DatabaseHelper.instance.database;
+
   runApp(const MyApp());
 }
 
@@ -20,11 +26,16 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     GoRouter routerConfig = GoRouter(
+      initialLocation: "/",
       routes: [
         GoRoute(
           path: "/",
           builder: (context, state) => const HomeScreen()
-        )
+        ),
+        GoRoute(
+          path: "/favourite",
+          builder: (context, state) => const FavouriteScreen()
+        ),
       ]
     );
 
