@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moviesharmal/screens/favourite_screen.dart';
 import 'package:moviesharmal/screens/home_screen.dart';
+import 'package:moviesharmal/screens/splash_screen.dart';
 import 'package:moviesharmal/utils/db.dart';
 import 'util.dart';
 import 'theme.dart';
@@ -26,8 +27,12 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     GoRouter routerConfig = GoRouter(
-      initialLocation: "/",
+      initialLocation: "/splash",
       routes: [
+        GoRoute(
+          path: "/splash",
+          builder: (context, state) => const SplashScreen(),
+        ),
         GoRoute(
           path: "/",
           builder: (context, state) => const HomeScreen()
