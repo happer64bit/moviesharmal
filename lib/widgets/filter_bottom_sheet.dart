@@ -70,7 +70,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 Navigator.pop(context);
                 widget.selectedFilters.clear();
                 widget.selectedFilters.addAll(_localSelectedFilters);
-                widget.applyFilters();  // Apply filters and fetch movies
+                widget.applyFilters();
               },
               child: const Text('Apply Filters'),
             ),

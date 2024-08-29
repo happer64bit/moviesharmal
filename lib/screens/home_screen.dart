@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moviesharmal/utils/state_management.dart';
 import 'package:moviesharmal/utils/types.dart';
 import 'package:moviesharmal/widgets/filter_bottom_sheet.dart';
@@ -21,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _restoreState();  // Restore state when the app is launched
+    _restoreState();
+    _fetchMovies();
   }
 
   Future<void> _restoreState() async {
@@ -117,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.favorite),
-            onPressed: () {},
+            onPressed: () {
+              GoRouter.of(context).push("/favourite");
+            },
           )
         ],
       ),

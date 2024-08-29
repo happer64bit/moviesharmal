@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:moviesharmal/utils/db.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../utils/types.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
-class MovieCardSwiper extends StatelessWidget {
+class MovieCardSwiper extends StatefulWidget {
   final List<Movie> movies;
   final Future<void> Function() loadMoreMovies;
   final bool isLoading;
@@ -17,12 +18,56 @@ class MovieCardSwiper extends StatelessWidget {
   });
 
   @override
+  _MovieCardSwiperState createState() => _MovieCardSwiperState();
+}
+
+class _MovieCardSwiperState extends State<MovieCardSwiper> {
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  Set<int> _favoriteMovieIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavoriteMovies();
+  }
+
+  Future<void> _loadFavoriteMovies() async {
+    final favoriteMovies = await _dbHelper.getFavoriteMovies();
+    setState(() {
+      _favoriteMovieIds = favoriteMovies.map((movie) => movie[DatabaseHelper.columnMovieId] as int).toSet();
+    });
+  }
+
+  void _toggleFavorite(int movieId) async {
+    if (_favoriteMovieIds.contains(movieId)) {
+      await _dbHelper.removeFavoriteMovie(movieId);
+    } else {
+      await _dbHelper.addFavoriteMovie({
+        DatabaseHelper.columnMovieId: movieId,
+        DatabaseHelper.columnType: 'favorite',
+        DatabaseHelper.columnTitle: '',
+        DatabaseHelper.columnBackdropPath: '',
+        DatabaseHelper.columnCreatedAt: '',
+      });
+    }
+    setState(() {
+      if (_favoriteMovieIds.contains(movieId)) {
+        _favoriteMovieIds.remove(movieId);
+      } else {
+        _favoriteMovieIds.add(movieId);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CardSwiper(
-      cardsCount: movies.length,
+      cardsCount: widget.movies.length,
       isLoop: false,
       cardBuilder: (context, index, horizontalOffsetPercentage, verticalOffsetPercentage) {
-        final movie = movies[index];
+        final movie = widget.movies[index];
+        final isFavorite = _favoriteMovieIds.contains(movie.id);
+
         return Container(
           height: MediaQuery.of(context).size.height,
           color: Theme.of(context).brightness == Brightness.light ? const Color(0xfff9f9ff) : const Color(0xff111318),
@@ -59,6 +104,15 @@ class MovieCardSwiper extends StatelessWidget {
                 Row(
                   children: [
                     const Spacer(),
+                    IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : Colors.grey,
+                      ),
+                      onPressed: () => _toggleFavorite(movie.id),
+                      tooltip: isFavorite ? "Remove from favorites" : "Add to favorites",
+                    ),
+                    const SizedBox(width: 10),
                     InkWell(
                       onTap: () async {
                         await launchUrl(Uri.parse("https://www.channelmyanmar.to/?s=${movie.title}"));
@@ -83,8 +137,8 @@ class MovieCardSwiper extends StatelessWidget {
         );
       },
       onSwipe: (previousIndex, currentIndex, direction) {
-        if ((currentIndex! + 1) == (movies.length - 1) && !isLoading) {
-          loadMoreMovies();
+        if ((currentIndex! + 1) == (widget.movies.length - 1) && !widget.isLoading) {
+          widget.loadMoreMovies();
         }
         return true;
       },
