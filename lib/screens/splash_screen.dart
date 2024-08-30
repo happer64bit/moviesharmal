@@ -22,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
     return Scaffold(
       body: Center(
         child: Column(
@@ -31,8 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
             RichText(
               text: TextSpan(
                 style: GoogleFonts.dmSerifDisplay(
-                  color: Colors.black,
-                  fontSize: 70
+                  fontSize: 70,
+                  color: brightness == Brightness.light ? Colors.black : Colors.white,
                 ),
                 children: const [
                   TextSpan(

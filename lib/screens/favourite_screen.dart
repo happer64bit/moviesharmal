@@ -30,9 +30,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   void _removeFavoriteMovie(Map<String, dynamic> movie) async {
     await dbHelper.removeFavoriteMovie(movie[DatabaseHelper.columnMovieId]);
-    if (await Vibration.hasVibrator() != null) {
-      Vibration.vibrate();
+    
+    if (await Vibration.hasAmplitudeControl() == true) {
+    Vibration.vibrate(amplitude: 10);
     }
+
 
     final index = savedMovies.indexOf(movie);
     if (index != -1) {
@@ -49,7 +51,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           onPressed: () async {
             await dbHelper.addFavoriteMovie(movie);
             setState(() {
-              savedMovies.insert(index, movie);
+              _fetchMovies();
             });
           },
         ),
