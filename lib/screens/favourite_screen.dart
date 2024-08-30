@@ -51,7 +51,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           onPressed: () async {
             await dbHelper.addFavoriteMovie(movie);
             setState(() {
-              savedMovies.insert(index, movie);
+              _fetchMovies();
             });
           },
         ),
